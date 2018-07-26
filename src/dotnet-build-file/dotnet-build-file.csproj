@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.2.5" />
+
         <None Include="build-file.csproj">
             <CopyToOutput>true</CopyToOutput>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -15,4 +17,32 @@
             <BuildAction>Content</BuildAction>
         </None>
     </ItemGroup>
+
+    <Target Name="WriteLaunchers" AfterTargets="CopyFilesToOutputDirectory">
+      <PropertyGroup>
+        <LauncherCmd><![CDATA[
+@ECHO OFF
+dotnet %~dp0$(AssemblyName).dll %*
+        ]]></LauncherCmd>
+      </PropertyGroup>
+
+      <WriteLinesToFile
+        File="$(OutputPath)$(AssemblyName).cmd"
+        Overwrite="true"
+        Lines="$(LauncherCmd)" />
+    </Target>
+
+    <Target Name="WriteDirectoryBuildProps" AfterTargets="WriteLaunchers">
+      <PropertyGroup>
+        <DirectoryBuildProps><![CDATA[
+<Project>
+</Project>
+        ]]></DirectoryBuildProps>
+      </PropertyGroup>
+
+      <WriteLinesToFile
+        File="$(OutputPath)Directory.Build.props"
+        Overwrite="true"
+        Lines="$(DirectoryBuildProps)" />
+    </Target> 
 </Project>
