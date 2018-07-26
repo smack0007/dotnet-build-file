@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>dotnet-build-file</ToolCommandName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="build-file.csproj">
+            <CopyToOutput>true</CopyToOutput>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <IncludeInPackage>true</IncludeInPackage>
+            <BuildAction>Content</BuildAction>
+        </None>
+    </ItemGroup>
+</Project>

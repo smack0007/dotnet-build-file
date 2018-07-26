@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <FileFullPath>$([System.IO.Path]::GetFullPath($(File)))</FileFullPath>
+    <FileDirectory>$([System.IO.Path]::GetDirectoryName($(FileFullPath)))\</FileDirectory>
+    <FileName>$([System.IO.Path]::GetFileName($(FileFullPath)))</FileName>
+    <FileNameWithoutExtension>$([System.IO.Path]::GetFileNameWithoutExtension($(FileFullPath)))</FileNameWithoutExtension>
+    
+    <IntermediateOutputPath>$(FileDirectory)obj</IntermediateOutputPath>
+    <OutputPath Condition=" $(OutputPath) == '' ">$(FileDirectory)</OutputPath>
+    <AssemblyName>$(FileNameWithoutExtension)</AssemblyName>
+    <Configuration Condition=" $(Configuration) == '' ">Release</Configuration>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <Compile Include="$(FileFullPath)" />
+  </ItemGroup>
+
+  <Import Condition=" Exists('$(FileDirectory)$(FileNameWithoutExtension).props') "
+          Project="$(FileDirectory)$(FileNameWithoutExtension).props" />
+
+  <Import Condition=" Exists('$(FileDirectory)$(FileNameWithoutExtension).targets') "
+          Project="$(FileDirectory)$(FileNameWithoutExtension).targets" />
+
+  <Target Name="Debug" BeforeTargets="CoreCompile" Condition=" $(Debug) == true ">
+      <Message Importance="High" Text="FileFullPath = '$(FileFullPath)'" />
+      <Message Importance="High" Text="FileDirectory = '$(FileDirectory)'" />
+      <Message Importance="High" Text="FileName = '$(FileName)'" />
+      <Message Importance="High" Text="FileNameWithoutExtension = '$(FileNameWithoutExtension)'" />
+
+      <Message Importance="High" Text="OutputPath = '$(OutputPath)'" />
+      <Message Importance="High" Text="AssemblyName = '$(AssemblyName)'" />
+      <Message Importance="High" Text="Configuration = '$(Configuration)'" />
+  </Target>
+
+  <Target Name="WriteLaunchers" AfterTargets="CopyFilesToOutputDirectory">
+      <PropertyGroup>
+        <LauncherCmd><![CDATA[
+@ECHO OFF
+dotnet %~dp0$(AssemblyName).dll %*
+        ]]></LauncherCmd>
+      </PropertyGroup>
+
+      <WriteLinesToFile
+        File="$(OutputPath)$(AssemblyName).cmd"
+        Overwrite="true"
+        Lines="$(LauncherCmd)" />
+  </Target>
+</Project>

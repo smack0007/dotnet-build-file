@@ -1,0 +1,1 @@
+dotnet tool update -g dotnet-build-file --add-source %~dp0bin\Debug\
