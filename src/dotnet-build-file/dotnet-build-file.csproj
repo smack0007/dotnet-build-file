@@ -32,17 +32,33 @@ dotnet %~dp0$(AssemblyName).dll %*
         Lines="$(LauncherCmd)" />
     </Target>
 
-    <Target Name="WriteDirectoryBuildProps" AfterTargets="WriteLaunchers">
+    <Target Name="WriteDirectoryBuildFiles" AfterTargets="WriteLaunchers">
       <PropertyGroup>
-        <DirectoryBuildProps><![CDATA[
+        <DirectoryBuildFile><![CDATA[
 <Project>
 </Project>
-        ]]></DirectoryBuildProps>
+        ]]></DirectoryBuildFile>
       </PropertyGroup>
 
       <WriteLinesToFile
         File="$(OutputPath)Directory.Build.props"
         Overwrite="true"
-        Lines="$(DirectoryBuildProps)" />
+        Lines="$(DirectoryBuildFile)" />
+
+      <WriteLinesToFile
+        File="$(OutputPath)Directory.Build.targets"
+        Overwrite="true"
+        Lines="$(DirectoryBuildFile)" />
+
+      <ItemGroup>
+        <None Include="$(OutputPath)Directory.Build.props">
+          <Pack>true</Pack>
+          <PackagePath>tools\$(TargetFramework)\any\</PackagePath>
+        </None>
+        <None Include="$(OutputPath)Directory.Build.targets">
+          <Pack>true</Pack>
+          <PackagePath>tools\$(TargetFramework)\any\</PackagePath>
+        </None>
+      </ItemGroup>
     </Target> 
 </Project>

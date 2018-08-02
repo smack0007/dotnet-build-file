@@ -5,5 +5,17 @@
         <BinDirectory>$(RepositoryRootDirectory)bin\</BinDirectory>
         <OutputPath>$([System.IO.Path]::GetFullPath('$(BinDirectory)$(Configuration)'))\$(MSBuildProjectName)</OutputPath>
         <LangVersion>latest</LangVersion>
+
+        <VersionPrefix>0.0.1</VersionPrefix>
+
+        <Authors>smack0007</Authors>
+        <Copyright>Copyright © Zachary Snow 2018</Copyright>
+
+        <PackageProjectUrl>https://github.com/smack0007/dotnet-build-file/</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/smack0007/dotnet-build-file/master/License.txt</PackageLicenseUrl>
+        <PackageTags>glfw</PackageTags>
+
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/smack0007/dotnet-build-file.git</RepositoryUrl>
     </PropertyGroup>
 </Project>

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using McMaster.Extensions.CommandLineUtils;
 
@@ -20,14 +21,16 @@ namespace DotnetBuildFile
 
             app.HelpOption();
             var fileName = app.Argument("file", "The file to build.").IsRequired();
-            var debug = app.Option<bool>("-d|--debug", "Show debug info.", CommandOptionType.SingleValue);
+            var debug = app.Option("-d|--debug", "Show debug info.", CommandOptionType.NoValue);
 
             app.OnExecute(() =>
             {
                 var fullPath = Path.GetFullPath(fileName.Value);
-                
-                RunProcess("dotnet", "msbuild", Path.Combine(assemblyDirectory, "build-file.csproj"), "/nologo", $"/p:File={fullPath}", "/t:Restore");
-                RunProcess("dotnet", "msbuild", Path.Combine(assemblyDirectory, "build-file.csproj"), "/nologo", $"/p:File={fullPath}");
+
+                var debugFlag = debug.HasValue() ? "/p:Debug=true" : "";
+
+                RunProcess("dotnet", "msbuild", Path.Combine(assemblyDirectory, "build-file.csproj"), "/nologo", debugFlag, $"/p:File={fullPath}", "/t:Restore");
+                RunProcess("dotnet", "msbuild", Path.Combine(assemblyDirectory, "build-file.csproj"), "/nologo", debugFlag, $"/p:File={fullPath}");
             });
 
             return app.Execute(args);
@@ -38,7 +41,7 @@ namespace DotnetBuildFile
             var startInfo = new ProcessStartInfo()
             {
                 FileName = fileName,
-                Arguments = "\"" + string.Join("\" \"", args) + "\"",
+                Arguments = "\"" + string.Join("\" \"", args.Where(x => !string.IsNullOrEmpty(x))) + "\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true

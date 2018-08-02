@@ -1,0 +1,5 @@
+<Project>
+    <Target Name="SayHello" AfterTargets="CopyFilesToOutputDirectory">
+        <Message Importance="High" Text="Hello world!" />
+    </Target>
+</Project>
