@@ -57,10 +57,10 @@
 
   <Target Name="WriteLaunchers" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
-      <LauncherCmd><![CDATA[
+      <LauncherCmd>
 @ECHO OFF
 dotnet %~dp0$(AssemblyName).dll %*
-      ]]></LauncherCmd>
+      </LauncherCmd>
     </PropertyGroup>
 
     <WriteLinesToFile
