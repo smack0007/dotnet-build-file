@@ -27,6 +27,7 @@ Arguments:
 Options:
   -?|-h|--help  Show help information
   -d|--debug    Show debug info.
+  -o|--output   Specify an output path.
 ```
 
 Given a simple `HelloWorld.cs`:

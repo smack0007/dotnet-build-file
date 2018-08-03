@@ -6,7 +6,7 @@
         <OutputPath>$([System.IO.Path]::GetFullPath('$(BinDirectory)$(Configuration)'))\$(MSBuildProjectName)</OutputPath>
         <LangVersion>latest</LangVersion>
 
-        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionPrefix>0.0.2</VersionPrefix>
 
         <Authors>smack0007</Authors>
         <Copyright>Copyright © Zachary Snow 2018</Copyright>

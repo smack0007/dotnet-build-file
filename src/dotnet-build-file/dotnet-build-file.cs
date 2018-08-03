@@ -22,21 +22,44 @@ namespace DotnetBuildFile
             app.HelpOption();
             var fileName = app.Argument("file", "The file to build.").IsRequired();
             var debug = app.Option("-d|--debug", "Show debug info.", CommandOptionType.NoValue);
+            var output = app.Option("-o|--output", "Specify an output path.", CommandOptionType.SingleValue);
 
             app.OnExecute(() =>
             {
                 var fullPath = Path.GetFullPath(fileName.Value);
 
                 var debugFlag = debug.HasValue() ? "/p:Debug=true" : "";
+                
+                var outputPathFlag = "";
+                if (output.HasValue())
+                {
+                    var outputPath = output.Value();
 
-                RunProcess("dotnet", "msbuild", Path.Combine(assemblyDirectory, "build-file.csproj"), "/nologo", debugFlag, $"/p:File={fullPath}", "/t:Restore");
-                RunProcess("dotnet", "msbuild", Path.Combine(assemblyDirectory, "build-file.csproj"), "/nologo", debugFlag, $"/p:File={fullPath}");
+                    if (!Path.IsPathRooted(outputPath))
+                        outputPath = Path.Combine(Directory.GetCurrentDirectory(), outputPath);
+
+                    outputPathFlag = $"/p:OutputPath={outputPath}";
+                }
+
+                RunProcess(
+                    "dotnet",
+                    new string[]
+                    {
+                        "msbuild",
+                        Path.Combine(assemblyDirectory, "build-file.csproj"),
+                        "/nologo",
+                        "/restore",
+                        $"/p:File={fullPath}",
+                        debugFlag,
+                        outputPathFlag
+                    },
+                    debug.HasValue());
             });
 
             return app.Execute(args);
         }
 
-        private static int RunProcess(string fileName, params string[] args)
+        private static int RunProcess(string fileName, string[] args, bool debug)
         {
             var startInfo = new ProcessStartInfo()
             {
@@ -46,6 +69,9 @@ namespace DotnetBuildFile
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             };
+
+            if (debug)
+                Console.WriteLine($"{startInfo.FileName} {startInfo.Arguments}");
 
             using (var process = Process.Start(startInfo))
             {

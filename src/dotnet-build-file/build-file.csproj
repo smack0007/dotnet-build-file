@@ -12,8 +12,9 @@
     <FileName>$([System.IO.Path]::GetFileName($(FileFullPath)))</FileName>
     <FileNameWithoutExtension>$([System.IO.Path]::GetFileNameWithoutExtension($(FileFullPath)))</FileNameWithoutExtension>
     
-    <IntermediateOutputPath>$(FileDirectory)obj</IntermediateOutputPath>
-    <OutputPath Condition=" $(OutputPath) == '' ">$(FileDirectory)bin</OutputPath>
+    <IntermediateOutputPath>$(FileDirectory)obj/</IntermediateOutputPath>
+    <OutputPath Condition=" $(OutputPath) == '' ">$(FileDirectory)bin/</OutputPath>
+
     <AssemblyName>$(FileNameWithoutExtension)</AssemblyName>
     <Configuration Condition=" $(Configuration) == '' ">Release</Configuration>
 
@@ -64,7 +65,7 @@ dotnet %~dp0$(AssemblyName).dll %*
     </PropertyGroup>
 
     <WriteLinesToFile
-      File="$(OutputPath)$(AssemblyName).cmd"
+      File="$(OutputPath)/$(AssemblyName).cmd"
       Overwrite="true"
       Lines="$(LauncherCmd)" />
   </Target>
