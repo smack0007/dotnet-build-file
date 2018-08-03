@@ -13,7 +13,7 @@
 
         <PackageProjectUrl>https://github.com/smack0007/dotnet-build-file/</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/smack0007/dotnet-build-file/master/License.txt</PackageLicenseUrl>
-        <PackageTags>glfw</PackageTags>
+        <PackageTags>dotnet, cli, csharp</PackageTags>
 
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/smack0007/dotnet-build-file.git</RepositoryUrl>
